@@ -1,0 +1,41 @@
+// Delete function
+// func_name : type([paraDataTypes,....], ReturnType, (parameter)=>{implementation})
+deleteMessage: update([], Result(message, Error,(id)=>{
+    //delete implementation
+    // get the resource to be deleted(storage)
+    const deletedMessage = messageStorage.remove(id)
+
+    if ("None" in deletedMessage){
+        return Err({NotFound: 'Message with ${id} not found'});
+    }
+    return Ok(deletedMessage.Some)
+}))
+
+
+
+// EmployeePayload 
+const EmployeePaylod = Record({
+    first_name: text,
+    second_name: text,
+    department: text,
+    salary:nat64,
+    ge: nat64
+})
+
+//Employee
+const Employee = Record({
+    id: text,
+    first_name: text,
+    second_name: text,
+    department: text,
+    salary:nat64,
+    age: nat64,
+    CreatedAt: nat64,
+    updateAt: Opt(nat64)
+})
+
+const employeeStorage = StableBTreeMap(text, Employee, 1)
+
+addEmployee: update([EmployeePayload], Result(Employee,Error),(payload)=> {
+    const employee = {id:uuidv4(), createdAt:ic.time(),updateAt:None,...g}
+}),
