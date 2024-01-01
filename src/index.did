@@ -1,15 +1,39 @@
-service: () -> {
-    addPatient: (record {age:nat64; name:text; treatment:text; diagnosis:text; roomNumber:opt nat64; attendingPhysician:text; gender:text}) -> (variant {Ok:record {id:text; age:nat64; admissionDate:nat64; name:text; treatment:text; diagnosis:text; roomNumber:opt nat64; attendingPhysician:text; gender:text; dischargeDate:opt nat64}; Err:variant {InvalidPayload:text; NotFound:text}});
-    deletePatient: (text) -> (variant {Ok:record {id:text; age:nat64; admissionDate:nat64; name:text; treatment:text; diagnosis:text; roomNumber:opt nat64; attendingPhysician:text; gender:text; dischargeDate:opt nat64}; Err:variant {InvalidPayload:text; NotFound:text}});
-    dischargePatient: (text) -> (variant {Ok:record {id:text; age:nat64; admissionDate:nat64; name:text; treatment:text; diagnosis:text; roomNumber:opt nat64; attendingPhysician:text; gender:text; dischargeDate:opt nat64}; Err:variant {InvalidPayload:text; NotFound:text}});
-    getDischargedPatients: () -> (variant {Ok:vec record {id:text; age:nat64; admissionDate:nat64; name:text; treatment:text; diagnosis:text; roomNumber:opt nat64; attendingPhysician:text; gender:text; dischargeDate:opt nat64}; Err:variant {InvalidPayload:text; NotFound:text}}) query;
-    getLongestAdmittedPatients: () -> (variant {Ok:vec record {id:text; age:nat64; admissionDate:nat64; name:text; treatment:text; diagnosis:text; roomNumber:opt nat64; attendingPhysician:text; gender:text; dischargeDate:opt nat64}; Err:variant {InvalidPayload:text; NotFound:text}}) query;
-    getMostRecentAdmissions: () -> (variant {Ok:vec record {id:text; age:nat64; admissionDate:nat64; name:text; treatment:text; diagnosis:text; roomNumber:opt nat64; attendingPhysician:text; gender:text; dischargeDate:opt nat64}; Err:variant {InvalidPayload:text; NotFound:text}}) query;
-    getPatient: (text) -> (variant {Ok:record {id:text; age:nat64; admissionDate:nat64; name:text; treatment:text; diagnosis:text; roomNumber:opt nat64; attendingPhysician:text; gender:text; dischargeDate:opt nat64}; Err:variant {InvalidPayload:text; NotFound:text}}) query;
-    getPatients: () -> (variant {Ok:vec record {id:text; age:nat64; admissionDate:nat64; name:text; treatment:text; diagnosis:text; roomNumber:opt nat64; attendingPhysician:text; gender:text; dischargeDate:opt nat64}; Err:variant {InvalidPayload:text; NotFound:text}}) query;
-    getPatientsByDiagnosis: (text) -> (variant {Ok:vec record {id:text; age:nat64; admissionDate:nat64; name:text; treatment:text; diagnosis:text; roomNumber:opt nat64; attendingPhysician:text; gender:text; dischargeDate:opt nat64}; Err:variant {InvalidPayload:text; NotFound:text}}) query;
-    getPatientsByRoom: (nat64) -> (variant {Ok:vec record {id:text; age:nat64; admissionDate:nat64; name:text; treatment:text; diagnosis:text; roomNumber:opt nat64; attendingPhysician:text; gender:text; dischargeDate:opt nat64}; Err:variant {InvalidPayload:text; NotFound:text}}) query;
-    updatePatient: (text, record {age:nat64; name:text; treatment:text; diagnosis:text; roomNumber:opt nat64; attendingPhysician:text; gender:text}) -> (variant {Ok:record {id:text; age:nat64; admissionDate:nat64; name:text; treatment:text; diagnosis:text; roomNumber:opt nat64; attendingPhysician:text; gender:text; dischargeDate:opt nat64}; Err:variant {InvalidPayload:text; NotFound:text}});
-    updatePatientPhysician: (text, text) -> (variant {Ok:record {id:text; age:nat64; admissionDate:nat64; name:text; treatment:text; diagnosis:text; roomNumber:opt nat64; attendingPhysician:text; gender:text; dischargeDate:opt nat64}; Err:variant {InvalidPayload:text; NotFound:text}});
-    updatePatientRoom: (text, nat64) -> (variant {Ok:record {id:text; age:nat64; admissionDate:nat64; name:text; treatment:text; diagnosis:text; roomNumber:opt nat64; attendingPhysician:text; gender:text; dischargeDate:opt nat64}; Err:variant {InvalidPayload:text; NotFound:text}});
+type Error = variant { InvalidPayload : text; NotFound : text };
+type Patient = record {
+  id : text;
+  age : nat64;
+  admissionDate : nat64;
+  name : text;
+  treatment : text;
+  diagnosis : text;
+  roomNumber : opt nat64;
+  attendingPhysician : text;
+  gender : text;
+  dischargeDate : opt nat64;
+};
+type PatientPayload = record {
+  age : nat64;
+  name : text;
+  treatment : text;
+  diagnosis : text;
+  roomNumber : opt nat64;
+  attendingPhysician : text;
+  gender : text;
+};
+type _AzleResult = variant { Ok : Patient; Err : Error };
+type _AzleResult_1 = variant { Ok : vec Patient; Err : Error };
+service : () -> {
+  addPatient : (PatientPayload) -> (_AzleResult);
+  deletePatient : (text) -> (_AzleResult);
+  dischargePatient : (text) -> (_AzleResult);
+  getDischargedPatients : () -> (_AzleResult_1) query;
+  getLongestAdmittedPatients : () -> (_AzleResult_1) query;
+  getMostRecentAdmissions : () -> (_AzleResult_1) query;
+  getPatient : (text) -> (_AzleResult) query;
+  getPatients : () -> (_AzleResult_1) query;
+  getPatientsByDiagnosis : (text) -> (_AzleResult_1) query;
+  getPatientsByRoom : (nat64) -> (_AzleResult_1) query;
+  updatePatient : (text, PatientPayload) -> (_AzleResult);
+  updatePatientPhysician : (text, text) -> (_AzleResult);
+  updatePatientRoom : (text, nat64) -> (_AzleResult);
 }
